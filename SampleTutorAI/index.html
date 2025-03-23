@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Math Tutor</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>AI Math Tutor</h1>
+
+    <div id="personalityButtons">
+        <button class="personality-btn" data-personality="HELPFUL" data-name="Helpful">😊</button>
+        <button class="personality-btn" data-personality="SARCASTIC" data-name="Sarcastic">😏</button>
+        <button class="personality-btn" data-personality="GRUMPY" data-name="Grumpy">😠</button>
+        <button class="personality-btn" data-personality="MEAN" data-name="Mean">👿</button>
+        <button class="personality-btn" data-personality="FRIENDLY" data-name="Friendly">😃</button>
+        <button class="personality-btn" data-personality="COMEDIC" data-name="Comedic">😂</button>
+        <button class="personality-btn" data-personality="CAT" data-name="Cat">🐱</button>
+    </div>
+    
+    <p id="personalityName">Helpful</p> <!-- Default personality name -->
+    
+
+    <button id="generateQuestion">Generate New Question</button>
+    <p id="questionText">Click the button to generate a problem.</p>
+
+    <input type="text" id="answerInput" placeholder="Enter your answer">
+    <button id="submitAnswer">Submit</button>
+    <p id="feedback"></p>
+
+    <h2>Step-by-Step Solution</h2>
+    <p id="solution"></p>
+
+    <h3>Further Exploration</h3>
+    <select id="followUpQuestions">
+        <option value="">Select a question</option>
+        <option value="real_world_example">What is a real-world example of this?</option>
+        <option value="alternative_method">Is there another way to solve it?</option>
+    </select>
+    <button id="askFollowUp">Ask</button>
+    <p id="followUpResponse"></p>
+
+    <script type="module" src="script.js"></script>
+</body>
+</html>
