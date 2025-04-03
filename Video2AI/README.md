@@ -50,6 +50,8 @@ Follow these steps to get the application up and running:
 2. **Go to root directory and install dependencies**:
    ```bash
    npm install
+   ```
+   Use this to update any of the dependency changes that other people may have pushed to the github
 
 3. **Set Up Environment Variables**:
 Create a .env.local file in the root directory of your project with the following content:
@@ -62,8 +64,48 @@ CLERK_SECRET_KEY=your_clerk_secret_key_here
 ```
 
 4. Start the Development Server:
+- Can be ignored probably
+
  ```bash
 next dev
+```
+
+
+5. **npm scripts**:
+
+### `"dev": "next dev"`
+- Runs the Next.js **development server**.
+- Starts the app in development mode with features like **hot reloading**.
+- By default, the server runs on [http://localhost:3000](http://localhost:3000).
+- In order to run it:
+```bash
+npm run dev
+```
+
+### `"build": "next build"`
+- Creates an **optimized production build** of your Next.js application.
+- Generates **static and server-rendered pages** for performance.
+- Outputs the build in the `.next/` directory.
+- Must be done before starting the application 
+- In order to run it:
+```bash
+npm run build
+```
+
+### `"start": "next start"`
+- Runs the **compiled production build** (after `next build`).
+- Starts the **production server**, serving the pre-built pages.
+- In order to run it:
+```bash
+npm run start
+```
+
+### `"lint": "next lint"`
+- Runs **ESLint** to check for potential errors and enforce code style.
+- Helps catch issues like **unused variables, incorrect imports, etc.**
+- In order to run it:
+```bash
+npm run lint
 ```
 
 ---
