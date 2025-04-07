@@ -1,4 +1,5 @@
 'use client'
+
 import React, {useState, useEffect, Suspense} from 'react'
 import { Button } from './button';
 import { Input } from './input';
@@ -9,7 +10,7 @@ import { useUser } from '@clerk/nextjs';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
 
-const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
+const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
     const [videoUrl, setVideoUrl] = useState('');
     const [quiz, setQuiz] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
@@ -19,6 +20,12 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
     const [message, setMessage] = useState('');
 
     const { user } = useUser();
+
+    useEffect(() => {
+      if (initialLink) {
+        setVideoUrl(initialLink);
+      }
+    }, [initialLink]);
   
     const handleTranscriptFetch = async () => {
       setLoading(true);

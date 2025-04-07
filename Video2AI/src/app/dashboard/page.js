@@ -1,6 +1,7 @@
 
 'use client'
 
+import { useSearchParams } from 'next/navigation';
 import React, { useState } from 'react';
 import Sidebar from '@/components/ui/Sidebar';
 import Quiz from '@/components/ui/Quiz';
@@ -10,10 +11,13 @@ const Page = () => {
   const [activePage, setActivePage] = useState('Quiz');
   const [savedQuizzes, setSavedQuizzes] = useState([]);
 
+  const searchParams = useSearchParams();
+  const link = searchParams.get('link'); // <-- grab URL param if it exists
+
   const renderContent = () => {
     switch (activePage) {
       case 'Quiz':
-        return <Quiz savedQuizzes={savedQuizzes} setSavedQuizzes={setSavedQuizzes} />;
+        return <Quiz savedQuizzes={savedQuizzes} setSavedQuizzes={setSavedQuizzes} initialLink={link}/>;
       case 'History':
         return <History savedQuizzes={savedQuizzes} setSavedQuizzes={setSavedQuizzes}/>;
       case 'Pricing':
