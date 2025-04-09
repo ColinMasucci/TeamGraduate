@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { YoutubeTranscript } from 'youtube-transcript';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import dbConnect from '@/lib/dbConnect';
+import { readFile } from 'fs/promises';
+import path from 'path';
 
 // const apiKey = 'AIzaSyA4l9CPHtDAptuqpNB8J_c8u4hIPA-18sA';
 const apiKey = process.env.GOOGLE_GEMINI_API
@@ -14,6 +16,7 @@ async function fetchTranscript(videoUrl) {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         // Add other necessary headers if required
       }} );
+
     const cleanedTranscript = transcript.map(entry => entry.text.replace(/&#?\w+;/g, ' ').trim()).join('\n');
     console.log('Transcript fetched and cleaned');
     return cleanedTranscript;
@@ -25,13 +28,39 @@ async function fetchTranscript(videoUrl) {
       videoUrl, 
       apiKey
     });
+
+    if (error.message.includes('Transcript is disabled')) {
+      throw new Error('Transcript is disabled for this video');
+    }
+
     throw new Error('Failed to fetch transcript');
   }
 }
 
+async function fetchSampleTranscript() {
+  const filePath = path.join(process.cwd(), 'src', 'app', 'sample-transcript.txt');
+  console.log("Filepath: " + filePath);
+  const rawText = await readFile(filePath, 'utf-8');
+  const firstFewLines = rawText.split(' ').slice(0, 10).join(' ');
+  console.log("Transcript: " + firstFewLines);
+
+  // Split into lines, clean, and structure
+  const transcript = rawText
+    .split('\n')
+    .filter(line => line.trim()) // remove empty lines
+    .map(line => ({
+      text: line.trim(),
+      offset: null // no timestamps available
+    }));
+
+  //return transcript;
+  return transcript.map(entry => entry.text).join('\n');
+}
+
 async function generateQuizQuestions(description) {
   try {
-    console.log('Generating quiz questions with description:', description);
+    const firstFewLines = description.split(' ').slice(0, 10).join(' ');
+    console.log('Generating quiz questions with description:', firstFewLines, "...");
     const genAI = new GoogleGenerativeAI(apiKey);
     const model = genAI.getGenerativeModel({
       model: 'gemini-1.5-flash',
@@ -76,6 +105,7 @@ async function generateQuizQuestions(description) {
 
     const jsonMatch = rawResponse.match(/\[.*\]/s);
     if (!jsonMatch) {
+      console.error('Raw Gemini response:', rawResponse);
       throw new Error('No valid JSON array found in the response');
     }
 
@@ -86,6 +116,7 @@ async function generateQuizQuestions(description) {
     return parsedResponse;
   } catch (error) {
     console.error('Failed to generate quiz questions from /api/transcript', error);
+    console.log(JSON.stringify(error))
     throw new Error('Failed to generate quiz questions from /api/transcript');
   }
 }
@@ -101,8 +132,10 @@ export async function POST(req) {
 
   try {
     console.log('Attempting to fetch transcript...');
-    const transcriptText = await fetchTranscript(videoUrl);
-    console.log('Transcript fetched successfully:', transcriptText);
+    //const transcriptText = await fetchTranscript(videoUrl);
+    const transcriptText = await fetchSampleTranscript();
+    const firstFewLines = transcriptText.split(' ').slice(0, 10).join(' ');
+    console.log('Transcript fetched successfully:', firstFewLines, "...");
 
     if (!transcriptText) {
       console.error('Failed to fetch transcript in /transcript');
@@ -114,6 +147,7 @@ export async function POST(req) {
 
     return NextResponse.json(quizQuestions);
   } catch (error) {
+    console.error('Error in generateQuizQuestions:', error.message);
     console.error('Error in generateQuizQuestions:', error);
     return NextResponse.json({ error: 'Failed to generate quiz questions from /api/transcript' }, { status: 500 });
   }
