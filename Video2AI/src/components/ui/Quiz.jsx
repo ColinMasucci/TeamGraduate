@@ -90,7 +90,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
       <div className="p-4 sm:h-screen flex flex-col ">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mx-auto">Transform Your Learning Experience</h2>
         <p className=" text-lg mx-auto mt-3">
-          Start creating engaging quizzes from your YouTube videos today.
+          Dont Start creating engaging quizzes from your YouTube videos today.
         </p>
         <div className="flex justify-center mt-10 ">
           <input
