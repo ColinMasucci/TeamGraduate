@@ -80,13 +80,13 @@ async function generateQuizQuestions(description) {
         {
           role: 'user',
           parts: [
-            { text: "you will be given a description of the video and you need to return me a JSON object of 5 questions with its options and correct answer that you will generate on basis of the description. Change up the questions and answers so that they are not the exact ones given in the description." },
+            { text: "you will be given a description of the video and you need to return me a JSON object of 6 questions(that will be slightly changed so that it is not the same as the video with the first two being very easy, the second two being less easy difficulty and the last two being medium and write at the top the difficulty) with its options and the correct answer (labeled as correct_answer) that you will generate on basis of the description " },
           ],
         },
         {
           role: 'model',
           parts: [
-            { text: "Okay, I'm ready! Please provide me with the description of the video. I will then analyze it and generate 5 multiple-choice questions with options and the correct answer for you that are similar but not the same." },
+            { text: "Okay, I'm ready! Please provide me with the description of the video. I will then analyze it and generate a JSON object of 6 multiple-choice questions(that will be slightly changed so that it is not the same as the video with the first two being very easy, the second two being less easy difficulty and the last two being medium and labeled as such) with multiple choice options as well as the correct answer(labeled as correct_answer) for you." },
           ],
         },
         {
