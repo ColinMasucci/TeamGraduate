@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adaptive Learning Assessment</title>
+    <script src="quiz.js" defer></script>
+</head>
+<body>
+    <h1>Adaptive Learning Assessment</h1>
+    <button id="generateQuizBtn" onclick="fetchQuiz()">Generate New Quiz</button>
+    <div id="quiz-container"></div>
+    <button id="submitBtn" style="display: none;" onclick="submitAnswers()">Submit Answers</button>
+    <button id="feedbackBtn" style="display: none;" onclick="get_feedback()">Get Feedback</button>
+    <div id="feedback-container"></div>
+</body>
+</html>
