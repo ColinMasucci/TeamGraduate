@@ -38,9 +38,15 @@ async function fetchTranscript(videoUrl) {
 }
 
 async function fetchSampleTranscript() {
-  const filePath = path.join(process.cwd(), 'src', 'app', 'sample-transcript.txt');
-  console.log("Filepath: " + filePath);
-  const rawText = await readFile(filePath, 'utf-8');
+  //const filePath = path.join(process.cwd(), 'src', 'app', 'sample-transcript.txt');
+  //console.log("Filepath: " + filePath);
+  //const rawText = await readFile(filePath, 'utf-8');
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
+  console.log(baseUrl);
+  const res = await fetch(`${baseUrl}/sample-transcript.txt`);
+  const rawText = await res.text();
+
   const firstFewLines = rawText.split(' ').slice(0, 10).join(' ');
   console.log("Transcript: " + firstFewLines);
 
