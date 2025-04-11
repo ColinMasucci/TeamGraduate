@@ -29,7 +29,7 @@ export default function Sidebar({ onSelect }) {
 
       {/* Sidebar */}
       <div
-        className={`fixed top-0 left-0 h-screen max-h-screen w-48 bg-gray-600 transition-transform transform ${
+        className={`fixed top-0 left-0 h-screen max-h-screen w-48 bg-blue-950 transition-transform transform ${
           isOpen ? 'translate-x-0' : '-translate-x-full'
         } sm:translate-x-0 sm:flex sm:flex-col sm:visible z-40`}
       >
@@ -46,24 +46,24 @@ export default function Sidebar({ onSelect }) {
           {/* Sidebar Links */}
           <div className="flex flex-col justify-center items-center gap-8 mt-20 w-full">
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Quiz')}>
-              <MdOutlineQuiz size={24} className="text-white" />
-              <h3 className="text-white text-lg">Quiz</h3>
+              <MdOutlineQuiz size={24} className="text-yellow-300" />
+              <h3 className="text-white text-lg hover:text-yellow-300">Quiz</h3>
             </div>
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('History')}>
-              <FaHistory size={24} className="text-white" />
-              <h3 className="text-white text-lg">History</h3>
+              <FaHistory size={24} className="text-yellow-300" />
+              <h3 className="text-white text-lg hover:text-yellow-300">History</h3>
             {/* </div>
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Pricing')}>
               <MdOutlinePriceChange size={24} className="text-white" />
               <h3 className="text-white text-lg">Pricing</h3> */}
             </div>
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
-              <TbGoGame size={24} className="text-white" />
-              <h3 className="text-white text-lg">Matching Game</h3>
+              <TbGoGame size={24} className="text-yellow-300" />
+              <h3 className="text-white text-lg hover:text-yellow-300">Matching Game</h3>
             </div>
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('FlashcardPage')}>
-              <RxCardStack size={24} className="text-white" />
-              <h3 className="text-white text-lg">Flashcards</h3>
+              <RxCardStack size={24} className="text-yellow-300" />
+              <h3 className="text-white text-lg hover:text-yellow-300">Flashcards</h3>
             </div>
           </div>
         </div>

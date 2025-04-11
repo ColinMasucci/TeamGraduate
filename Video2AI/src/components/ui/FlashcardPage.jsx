@@ -52,7 +52,7 @@ const FlashcardPage = () => {
         {/* Left Arrow */}
         <button
           onClick={prevCard}
-          className="absolute left-[-40px] top-1/2 transform -translate-y-1/2 bg-gray-600 text-white p-3 rounded-full shadow-lg z-10 hover:bg-gray-700"
+          className="absolute left-[-40px] top-1/2 transform -translate-y-1/2 bg-blue-950 text-white p-3 rounded-full shadow-lg z-10 hover:bg-blue-900"
         >
           ←
         </button>
@@ -85,7 +85,7 @@ const FlashcardPage = () => {
         {/* Right Arrow */}
         <button
           onClick={nextCard}
-          className="absolute right-[-40px] top-1/2 transform -translate-y-1/2 bg-gray-600 text-white p-3 rounded-full shadow-lg z-10 hover:bg-gray-700"
+          className="absolute right-[-40px] top-1/2 transform -translate-y-1/2 bg-blue-950 text-white p-3 rounded-full shadow-lg z-10 hover:bg-blue-900"
         >
           →
         </button>

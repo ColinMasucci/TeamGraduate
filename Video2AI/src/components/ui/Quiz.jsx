@@ -98,7 +98,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
             placeholder="  Enter YouTube video link"
             value={videoUrl}
             onChange={(e) => setVideoUrl(e.target.value)}
-            className="max-w-md flex-1 text-white bg-black"/>
+            className="max-w-md flex-1 rounded-md text-white bg-blue-950"/>
           <Button onClick={handleSubmit} className="ml-4">Convert</Button>
         </div>
         <section className="container mx-auto px-4 md:px-6 ">

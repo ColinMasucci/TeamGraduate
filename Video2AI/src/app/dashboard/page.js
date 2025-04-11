@@ -40,7 +40,7 @@ const Page = () => {
       <Sidebar onSelect={setActivePage} />
 
       {/* Main Content */}
-      <div className="flex-grow p-4 mt-10 sm:mt-0 sm:ml-40">
+      <div className="flex-grow p-4 mt-10 sm:mt-0 sm:ml-40 bg-gray-500">
         {renderContent()}
       </div>
     </main>
