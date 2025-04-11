@@ -7,6 +7,9 @@ import Sidebar from '@/components/ui/Sidebar';
 import Quiz from '@/components/ui/Quiz';
 import History from '@/components/ui/History';
 import Pricing from '@/components/ui/Pricing';
+import MatchingGame from '@/components/ui/MatchingGame';
+import FlashcardPage from '@/components/ui/FlashcardPage';
+
 const Page = () => {
   const [activePage, setActivePage] = useState('Quiz');
   const [savedQuizzes, setSavedQuizzes] = useState([]);
@@ -22,6 +25,10 @@ const Page = () => {
         return <History savedQuizzes={savedQuizzes} setSavedQuizzes={setSavedQuizzes}/>;
       case 'Pricing':
         return <Pricing />;
+      case 'MatchingGame':
+        return <MatchingGame />;
+      case 'FlashcardPage':
+        return <FlashcardPage />;
       default:
         return <Quiz />;
     }

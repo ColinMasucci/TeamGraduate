@@ -87,3 +87,28 @@
     }
 }
 
+
+
+/* Used for FlashcardPage */
+
+.flip-card {
+  perspective: 1000px;
+}
+
+.flip-card-inner{
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  height: 100%;
+}
+
+.flip-card-front,
+.flip-card-back {
+  position: absolute;
+  backface-visibility: hidden;
+  background-color: aliceblue;
+  color: black;
+}
+
+.flip-card-back {
+  transform: rotateY(180deg);
+}

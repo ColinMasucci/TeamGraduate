@@ -6,6 +6,8 @@ import { MdClose } from 'react-icons/md';
 import { MdOutlineQuiz } from "react-icons/md";
 import { FaHistory } from "react-icons/fa";
 import { MdOutlinePriceChange } from "react-icons/md";
+import { TbGoGame } from "react-icons/tb";
+import { RxCardStack } from "react-icons/rx";
 
 export default function Sidebar({ onSelect }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -54,6 +56,14 @@ export default function Sidebar({ onSelect }) {
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Pricing')}>
               <MdOutlinePriceChange size={24} className="text-white" />
               <h3 className="text-white text-lg">Pricing</h3> */}
+            </div>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
+              <TbGoGame size={24} className="text-white" />
+              <h3 className="text-white text-lg">Matching Game</h3>
+            </div>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('FlashcardPage')}>
+              <RxCardStack size={24} className="text-white" />
+              <h3 className="text-white text-lg">Flashcards</h3>
             </div>
           </div>
         </div>
