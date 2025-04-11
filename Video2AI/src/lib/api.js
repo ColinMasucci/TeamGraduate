@@ -84,6 +84,30 @@ export async function generateTranscript(videoUrl) {
     }
 }
 
+export async function getMatchingPairs(videoUrl) {
+  try {
+      const response = await fetch('/api/getMatchingPairs', {
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json', 
+          },
+          body: JSON.stringify({ videoUrl }),
+      });
+
+      if (!response.ok) {
+          const error = await response.json();
+          throw new Error(error.error || 'Failed to generate matching pairs from /api.js');
+      }
+
+      // Return the JSON data
+      const result = await response.json();
+      return result;
+  } catch (error) {
+      console.error('Error in generateGetMatchingPirs:', error);
+      throw error;  
+  }
+}
+
 
 // quiz
 // : 

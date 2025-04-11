@@ -1,6 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
+import { getMatchingPairs } from "@/lib/api";
 
 const itemsData = [
   { id: 'word1', text: 'Ecosystem', match: 'word1' },
@@ -22,6 +23,29 @@ const itemsData = [
     match: 'word3',
   },
 ];
+
+const transformToMatchingData = (data) => {
+    const items = [];
+  
+    data.forEach((pair, index) => {
+      const matchId = `word${index + 1}`;
+      items.push(
+        {
+          id: matchId,
+          text: pair.term || pair.question || `Term ${index + 1}`,
+          match: matchId,
+        },
+        {
+          id: `def${index + 1}`,
+          text: pair.definition || pair.answer || `Definition ${index + 1}`,
+          match: matchId,
+        }
+      );
+    });
+  
+    return items;
+};
+  
 
 const getRandomPosition = () => {
   const left = Math.random() * 80 + 10;
@@ -90,7 +114,6 @@ const MatchingGame = () => {
             const newCount = prev - 2;
             if (newCount === 0) {
               clearInterval(timerId);
-              //alert(`🎉 You won! Time: ${formatTime(time)}`);
             }
             return newCount;
           });
@@ -133,7 +156,7 @@ const MatchingGame = () => {
     <div className="w-full text-center">
 
       <h1 className="text-2xl font-bold mb-6">Match Words to Their Definitions</h1>
-      <div className="mb-4 text-xl font-mono text-gray-700">
+      <div className="mb-4 text-xl font-mono text-gray-100">
         ⏱ Time: {formatTime(time)}
       </div>
 
@@ -148,7 +171,7 @@ const MatchingGame = () => {
                     <p className="mb-6 text-black text-lg">Match each word with its definition!</p>
                     <button
                         onClick={handleStart}
-                        className="bg-blue-600 text-white px-6 py-3 rounded text-lg shadow hover:bg-blue-700 transition"
+                        className="bg-blue-950 text-white px-6 py-3 rounded text-lg shadow hover:bg-blue-900 transition"
                     >
                         Start Game
                     </button>
