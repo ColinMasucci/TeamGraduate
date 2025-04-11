@@ -3,7 +3,7 @@ import mongoose from 'mongoose';
 
 const quizSchema = new mongoose.Schema({
   // userIdentifier: {type: String, required:true},
-  userIdentifier: { type: String, required: true }, 
+  userIdentifier: { type: String, required: false }, 
   videoUrl: { type: String, required: true },
   quiz: [
     {
