@@ -2,41 +2,42 @@
 
 import React, { useEffect, useRef, useState } from 'react';
 import { getMatchingPairs } from "@/lib/api";
+import { useUser } from '@clerk/nextjs';
 
-const itemsData = [
-  { id: 'word1', text: 'Ecosystem', match: 'word1' },
-  { id: 'word2', text: 'Photosynthesis', match: 'word2' },
-  { id: 'word3', text: 'Gravity', match: 'word3' },
-  {
-    id: 'def1',
-    text: 'A community of living organisms and their environment',
-    match: 'word1',
-  },
-  {
-    id: 'def2',
-    text: 'The process plants use to convert sunlight into energy',
-    match: 'word2',
-  },
-  {
-    id: 'def3',
-    text: 'The force that pulls objects toward the Earth',
-    match: 'word3',
-  },
-];
+// const itemsData = [
+//   { id: 'word1', text: 'Ecosystem', match: 'word1' },
+//   { id: 'word2', text: 'Photosynthesis', match: 'word2' },
+//   { id: 'word3', text: 'Gravity', match: 'word3' },
+//   {
+//     id: 'def1',
+//     text: 'A community of living organisms and their environment',
+//     match: 'word1',
+//   },
+//   {
+//     id: 'def2',
+//     text: 'The process plants use to convert sunlight into energy',
+//     match: 'word2',
+//   },
+//   {
+//     id: 'def3',
+//     text: 'The force that pulls objects toward the Earth',
+//     match: 'word3',
+//   },
+// ];
 
 const transformToMatchingData = (data) => {
     const items = [];
   
     data.forEach((pair, index) => {
-      const matchId = `word${index + 1}`;
+      const matchId = `match${index + 1}`;
       items.push(
         {
-          id: matchId,
+          id: `term-${index}`,
           text: pair.term || pair.question || `Term ${index + 1}`,
           match: matchId,
         },
         {
-          id: `def${index + 1}`,
+          id: `def-${index}`,
           text: pair.definition || pair.answer || `Definition ${index + 1}`,
           match: matchId,
         }
@@ -58,8 +59,39 @@ const MatchingGame = () => {
   const [started, setStarted] = useState(false);
   const [time, setTime] = useState(0);
   const [timerId, setTimerId] = useState(null);
-  const [itemsRemaining, setItemsRemaining] = useState(itemsData.length);
+  const [itemsData, setItemsData] = useState(null);
+  const [itemsRemaining, setItemsRemaining] = useState(-1);
+  const [videoUrl, setVideoUrl] = useState('');
+  
 
+  const [loading, setLoading] = useState(false);
+  const { user } = useUser();
+
+  const handleMatchingPairsFetch = async (term, def) => {
+    setLoading(true);
+
+    if (!user) {
+        setError('User is not authenticated.');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        console.log('clerk auth id', user.id)
+        const data = await getMatchingPairs(videoUrl);
+        if (Array.isArray(data) && data.length > 0) {
+          setItemsData(transformToMatchingData(data));
+        } else {
+          setError('Unexpected format for matching terms');
+        }
+      } catch (error) {
+        setError('Failed to fetch matchingPairs. Please try again.');
+      } finally {
+        setLoading(false);
+      }
+  };
+
+  //Once started initialize all the draggable objects
   useEffect(() => {
     const items = document.querySelectorAll('.drag-item');
 
@@ -130,20 +162,30 @@ const MatchingGame = () => {
     };
   }, [started, time, timerId]);
 
-  
+
+  //Set start state and Timer once the MatchingItems are assigned
+  useEffect(() => {
+    if (itemsData){
+      setStarted(true);
+      setItemsRemaining(itemsData.length);
+      const intervalId = setInterval(() => {
+        setTime((t) => t + 1);
+      }, 1000);
+      setTimerId(intervalId);
+    }
+  }, [itemsData])
+
+  //Runs after handleStart
+  useEffect(() => {
+    if (videoUrl) {
+      handleMatchingPairsFetch();
+    }
+  }, [videoUrl]);
 
 
-
-
-
-
+  //When the Start Button is pressed
   const handleStart = () => {
-    setStarted(true);
-    setItemsRemaining(itemsData.length);
-    const intervalId = setInterval(() => {
-      setTime((t) => t + 1);
-    }, 1000);
-    setTimerId(intervalId);
+    setVideoUrl("https://youtube.com");
   };
 
   const formatTime = (seconds) => {
@@ -169,12 +211,18 @@ const MatchingGame = () => {
                 <div className="z-50 flex flex-col w-full h-full items-center justify-center bg-opacity-95">
                     <h1 className="text-3xl text-black font-bold mb-4">Matching Game</h1>
                     <p className="mb-6 text-black text-lg">Match each word with its definition!</p>
-                    <button
-                        onClick={handleStart}
-                        className="bg-blue-950 text-white px-6 py-3 rounded text-lg shadow hover:bg-blue-900 transition"
-                    >
-                        Start Game
-                    </button>
+                    {loading ? (
+                      <div className="mt-5 w-48 h-2 bg-gray-300 rounded-full overflow-hidden mb-6">
+                          <div className="h-full bg-blue-700 animate-pulse w-full"></div>
+                      </div>
+                    ) : (
+                      <button
+                          onClick={handleStart}
+                          className="bg-blue-950 text-white px-6 py-3 rounded text-lg shadow hover:bg-blue-900 transition"
+                      >
+                          Start Game
+                      </button>
+                    )}
                 </div>
             )}
 
