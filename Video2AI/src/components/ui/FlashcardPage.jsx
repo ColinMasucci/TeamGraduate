@@ -147,7 +147,7 @@ const FlashcardPage = () => {
                 ) : (
                     <Button
                     onClick={handleLoadFlashcards}
-                    className="mt-4 px-6 py-3bg-blue-950 hover:bg-blue-900 text-white"
+                    className="mt-4 px-6 py-3 bg-blue-950 hover:bg-blue-900 text-white"
                     >
                     Load Flashcards
                     </Button>

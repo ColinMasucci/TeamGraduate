@@ -35,7 +35,7 @@ const Page = () => {
   };
 
   return (
-    <main className="flex flex-col sm:flex-row h-screen">
+    <main className="flex flex-col sm:flex-row  bg-gray-500 min-h-screen">
       {/* Sidebar */}
       <Sidebar onSelect={setActivePage} />
 

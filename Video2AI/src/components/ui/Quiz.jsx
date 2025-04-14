@@ -87,12 +87,12 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
     };
   
     return (
-      <div className="p-4 sm:h-screen flex flex-col ">
+      <div className="p-4 flex flex-col ">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mx-auto">Transform Your Learning Experience</h2>
         <p className=" text-lg mx-auto mt-3">
           Start creating engaging quizzes from your YouTube videos today.
         </p>
-        <div className="flex justify-center mt-10 ">
+        <div className="flex justify-center mt-10">
           <input
             type="text"
             placeholder="  Enter YouTube video link"
