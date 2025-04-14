@@ -183,7 +183,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
               <h4 className="font-bold">{entry.question}</h4>
               <p>Your answer: <strong>{entry.user_answer}</strong></p>
               <p>Correct: <strong>{entry.correct ? '✅ Yes' : '❌ No'}</strong></p>
-              <p className="mt-2 text-gray-700"><em>Feedback:</em> {entry.explanation}</p>
+              <p className="mt-2 text-gray-700"><em className='font-bold'>Feedback:</em> {entry.explanation}</p>
             </div>
           )))}
         </section>
