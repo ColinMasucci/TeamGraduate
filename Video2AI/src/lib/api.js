@@ -128,6 +128,26 @@ export async function generateFeedback(quiz, userAnswers) {
   }
 }
 
+export async function saveMatchingResult(userIdentifier, username, score) {
+  const res = await fetch('/api/saveMatchingResult', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ userIdentifier, username, score })
+  });
+
+  if (!res.ok) throw new Error('Failed to save score');
+  return await res.json();
+}
+
+
+export async function fetchLeaderboard() {
+  const res = await fetch('/api/leaderboard');
+  if (!res.ok) throw new Error('Failed to fetch leaderboard');
+  return await res.json();
+}
+
 
 // quiz
 // : 

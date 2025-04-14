@@ -95,7 +95,7 @@ async function getMatchingPairs(description) {
             role: 'model',
             parts: [
               {
-                text: `Okay! I'm ready. Please provide the description of the video and I’ll return 6 matching pairs in JSON format as requested.`,
+                text: `Okay! I'm ready. Please provide the description of the video and I’ll return 7 matching pairs in JSON format as requested.`,
               },
             ],
           },

@@ -1,7 +1,7 @@
 'use client';
 
 import React, { useEffect, useRef, useState } from 'react';
-import { getMatchingPairs } from "@/lib/api";
+import { getMatchingPairs,  saveMatchingResult, fetchLeaderboard } from "@/lib/api";
 import { useUser } from '@clerk/nextjs';
 
 // const itemsData = [
@@ -63,9 +63,11 @@ const MatchingGame = () => {
   const [itemsRemaining, setItemsRemaining] = useState(-1);
   const [videoUrl, setVideoUrl] = useState('');
   
-
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
+
+  const [showLeaderboard, setShowLeaderboard] = useState(false);
+  const [leaderboardData, setLeaderboardData] = useState([]);
 
   const handleMatchingPairsFetch = async (term, def) => {
     setLoading(true);
@@ -89,6 +91,16 @@ const MatchingGame = () => {
       } finally {
         setLoading(false);
       }
+  };
+
+  const handleShowLeaderboard = async () => {
+    try {
+      const data = await fetchLeaderboard();
+      setLeaderboardData(data);
+      setShowLeaderboard(true);
+    } catch (error) {
+      console.error('Error fetching leaderboard:', error);
+    }
   };
 
   //Once started initialize all the draggable objects
@@ -182,6 +194,16 @@ const MatchingGame = () => {
     }
   }, [videoUrl]);
 
+  //When there are no more itms this runs
+  useEffect(() => {
+    if (itemsRemaining === 0 && time > 0) {
+      // Save score
+      saveMatchingResult(user.id, user.fullName, time)
+        .then(() => console.log('Score saved!'))
+        .catch(err => console.error(err));
+    }
+  }, [itemsRemaining]);
+
 
   //When the Start Button is pressed
   const handleStart = () => {
@@ -227,10 +249,39 @@ const MatchingGame = () => {
             )}
 
             {itemsRemaining == 0 && (
-                <div className="z-50 flex flex-col w-full h-full items-center justify-center bg-opacity-95">
-                    <h1 className="text-3xl text-black font-bold mb-4">🎉 You won! 🎉</h1>
-                    <p className="mb-6 text-black text-lg">Time: {formatTime(time)}</p>
+              <div>
+              {showLeaderboard ? (
+                <div className="fixed text-black inset-0 bg-black bg-opacity-75 flex items-center justify-center z-50">
+                  <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+                    <h2 className="text-2xl font-bold mb-4 text-center">🏆 Leaderboard</h2>
+                    <ol className="list-decimal pl-6">
+                      {leaderboardData.map((entry, index) => (
+                        <li key={index} className="mb-2">
+                          <span className="font-semibold">{entry.username}</span> - {formatTime(entry.score)}
+                        </li>
+                      ))}
+                    </ol>
+                    <button
+                      onClick={() => setShowLeaderboard(false)}
+                      className="mt-4 bg-gray-700 text-white px-4 py-2 rounded hover:bg-gray-600 transition"
+                    >
+                      Close
+                    </button>
+                  </div>
                 </div>
+              ) : (
+              <div className="z-50 flex flex-col w-full h-full items-center justify-center bg-opacity-95">
+                  <h1 className="text-3xl text-black font-bold mb-4">🎉 You won! 🎉</h1>
+                  <p className="mb-6 text-black text-lg">Time: {formatTime(time)}</p>
+                  <button
+                    onClick={handleShowLeaderboard}
+                    className="bg-blue-800 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition"
+                  >
+                    View Leaderboard
+                  </button>
+              </div>
+              )}
+              </div>
             )}
         </div>
 
