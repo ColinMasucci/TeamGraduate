@@ -3,7 +3,7 @@
 import React, {useState, useEffect, Suspense} from 'react'
 import { Button } from './button';
 import { Input } from './input';
-import {  saveQuiz, deleteQuiz, generateTranscript } from "@/lib/api";
+import {  saveQuiz, deleteQuiz, generateTranscript, generateFeedback } from "@/lib/api";
 import { v4 as uuidv4 } from 'uuid';
 import '../../app/globals.css';
 import { useUser } from '@clerk/nextjs';
@@ -16,8 +16,10 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
     const [userAnswers, setUserAnswers] = useState([]);
     const [score, setScore] = useState(null);
     const [error, setError] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [loadingQuiz, setLoadingQuiz] = useState(false);
+    const [loadingFeedback, setLoadingFeedback] = useState(false);
     const [message, setMessage] = useState('');
+    const [feedback, setFeedback] = useState(null);
 
     const { user } = useUser();
 
@@ -28,11 +30,11 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
     }, [initialLink]);
   
     const handleTranscriptFetch = async () => {
-      setLoading(true);
+      setLoadingQuiz(true);
 
     if (!user) {
         setError('User is not authenticated.');
-        setLoading(false);
+        setLoadingQuiz(false);
         return;
       }
   
@@ -59,7 +61,34 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
       } catch (error) {
         setError('Failed to fetch transcript. Please try again.');
       } finally {
-        setLoading(false);
+        setLoadingQuiz(false);
+      }
+    };
+
+    const handleQuizFeedbackFetch = async () => {
+      setLoadingFeedback(true);
+
+      if (!user) {
+        setError('User is not authenticated.');
+        setLoadingFeedback(false);
+        return;
+      }
+  
+      try {
+        console.log('clerk auth id', user.id)
+        const data = await generateFeedback(quiz, userAnswers);
+        if (Array.isArray(data) && data.length > 0) {
+          setFeedback(data);
+          
+          
+          setMessage('Quiz Feedback got successfully!');
+        } else {
+          setError('Unexpected format of feedback');
+        }
+      } catch (error) {
+        setError('Failed to fetch quizFeedback. Please try again.');
+      } finally {
+        setLoadingFeedback(false);
       }
     };
   
@@ -84,6 +113,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
         }
       });
       setScore(calculatedScore);
+      handleQuizFeedbackFetch();
     };
   
     return (
@@ -102,7 +132,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
           <Button onClick={handleSubmit} className="ml-4">Convert</Button>
         </div>
         <section className="container mx-auto px-4 md:px-6 ">
-          {loading ? (
+          {loadingQuiz ? (
             <Suspense  fallback={<Loading />} >
              <Loading className="mt-56"/>
             </Suspense>
@@ -143,6 +173,19 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
               </div>
             )
           )}
+          {loadingFeedback ? (
+            <Suspense  fallback={<Loading />} >
+             <Loading className="mt-56"/>
+            </Suspense>
+          ) : (
+          feedback && feedback.map((entry, idx) => (
+            <div key={idx} className="bg-white text-black shadow p-4 rounded mt-4">
+              <h4 className="font-bold">{entry.question}</h4>
+              <p>Your answer: <strong>{entry.user_answer}</strong></p>
+              <p>Correct: <strong>{entry.correct ? '✅ Yes' : '❌ No'}</strong></p>
+              <p className="mt-2 text-gray-700"><em>Feedback:</em> {entry.explanation}</p>
+            </div>
+          )))}
         </section>
       </div>
     );

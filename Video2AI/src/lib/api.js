@@ -108,6 +108,26 @@ export async function getMatchingPairs(videoUrl) {
   }
 }
 
+export async function generateFeedback(quiz, userAnswers) {
+  try {
+    const res = await fetch('/api/quizFeedback', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        quiz,
+        userAnswers
+      })
+    });
+    const feedback = await res.json();
+    return feedback;
+  } catch (error) {
+      console.error('Error in generateFeedback:', error);
+      throw error;  
+  }
+}
+
 
 // quiz
 // : 
