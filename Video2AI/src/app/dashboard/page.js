@@ -25,6 +25,8 @@ const Page = () => {
         return <History savedQuizzes={savedQuizzes} setSavedQuizzes={setSavedQuizzes}/>;
       case 'Pricing':
         return <Pricing />;
+      case 'login':
+        return <GetStartedButton />;
       case 'MatchingGame':
         return <MatchingGame />;
       case 'FlashcardPage':

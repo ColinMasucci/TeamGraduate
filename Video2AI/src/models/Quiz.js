@@ -1,6 +1,5 @@
-
 import mongoose from 'mongoose';
-
+mongoose.connect(process.env.MONGO_URI);
 const quizSchema = new mongoose.Schema({
   // userIdentifier: {type: String, required:true},
   userIdentifier: { type: String, required: false }, 
