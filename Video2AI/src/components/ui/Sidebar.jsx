@@ -52,10 +52,11 @@ export default function Sidebar({ onSelect }) {
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('History')}>
               <FaHistory size={24} className="text-yellow-300" />
               <h3 className="text-white text-lg hover:text-yellow-300">History</h3>
-            {/* </div>
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Pricing')}>
+            </div>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Login')}>
               <MdOutlinePriceChange size={24} className="text-white" />
-              <h3 className="text-white text-lg">Pricing</h3> */}
+              <h3 className="text-white text-lg">login</h3>
+    
             </div>
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
               <TbGoGame size={24} className="text-yellow-300" />
