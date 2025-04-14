@@ -1,6 +1,9 @@
 
 import mongoose from 'mongoose';
-
+const connectDB = async () => {
+  try {
+      await mongoose.connect(process.env.MONGODB_URI, {});
+      console.log("MongoDB Connected");
 const quizSchema = new mongoose.Schema({
   // userIdentifier: {type: String, required:true},
   userIdentifier: { type: String, required: false }, 
@@ -15,5 +18,11 @@ const quizSchema = new mongoose.Schema({
 }, { timestamps: true });
 
 const Quiz = mongoose.models.Quiz || mongoose.model('Quiz', quizSchema);
+  } catch (error) {
+      console.error("MongoDB connection error:", error.message);
+      process.exit(1);
+  }
+};
+
 
 export default Quiz;

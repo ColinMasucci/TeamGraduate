@@ -56,7 +56,6 @@ export default function Sidebar({ onSelect }) {
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Login')}>
               <MdOutlinePriceChange size={24} className="text-white" />
               <h3 className="text-white text-lg">login</h3>
-    
             </div>
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
               <TbGoGame size={24} className="text-yellow-300" />
