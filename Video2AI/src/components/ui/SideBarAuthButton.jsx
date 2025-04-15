@@ -10,17 +10,10 @@ const SidebarAuthButton = () => {
   const { isSignedIn } = useUser();
   const router = useRouter();
 
-  const handleDashboardRedirect = () => {
-    router.push('/dashboard');
-    toast.success('Welcome to dashboard');
-  };
-
   return (
     <div>
       {isSignedIn ? (
-        <SignOutButton
-          //signOutCallback={() => toast.success('Logged out successfully')}
-        >
+        <SignOutButton>
           <div className="flex items-center gap-3 cursor-pointer">
             <FiLogOut size={24} className="text-yellow-300" />
             <h3 className="text-white text-lg hover:text-yellow-300">Logout</h3>
@@ -33,20 +26,6 @@ const SidebarAuthButton = () => {
                 <h3 className="text-white text-lg hover:text-yellow-300">Login</h3>
             </SignInButton>
         </div>
-        // <SignOutButton>
-        //     {({ signOut }) => (
-        //     <div
-        //         onClick={async () => {
-        //         await signOut();
-        //         toast.success('Logged out successfully');
-        //         }}
-        //         className="flex items-center gap-3 cursor-pointer"
-        //     >
-        //         <FiLogOut size={24} className="text-yellow-300" />
-        //         <h3 className="text-white text-lg hover:text-yellow-300">Logout</h3>
-        //     </div>
-        //     )}
-        // </SignOutButton>
       
       )}
     </div>
