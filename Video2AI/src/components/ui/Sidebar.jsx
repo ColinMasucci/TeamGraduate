@@ -5,7 +5,7 @@ import { GiHamburgerMenu } from 'react-icons/gi';
 import { MdClose } from 'react-icons/md';
 import { MdOutlineQuiz } from "react-icons/md";
 import { FaHistory } from "react-icons/fa";
-import { MdOutlinePriceChange } from "react-icons/md";
+import { FiLogIn } from "react-icons/fi";
 import { TbGoGame } from "react-icons/tb";
 import { RxCardStack } from "react-icons/rx";
 
@@ -46,6 +46,10 @@ export default function Sidebar({ onSelect }) {
 
           {/* Sidebar Links */}
           <div className="flex flex-col justify-center items-center gap-8 mt-20 w-full">
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Login')}>
+              <FiLogIn size={24} className="text-yellow-300" />
+              <h3 className="text-white text-lg hover:text-yellow-300">Login</h3>
+            </div>
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Quiz')}>
               <MdOutlineQuiz size={24} className="text-yellow-300" />
               <h3 className="text-white text-lg hover:text-yellow-300">Quiz</h3>
@@ -53,10 +57,6 @@ export default function Sidebar({ onSelect }) {
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('History')}>
               <FaHistory size={24} className="text-yellow-300" />
               <h3 className="text-white text-lg hover:text-yellow-300">History</h3>
-            </div>
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Login')}>
-              <MdOutlinePriceChange size={24} className="text-white" />
-              <h3 className="text-white text-lg">Login</h3>
             </div>
             <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
               <TbGoGame size={24} className="text-yellow-300" />
