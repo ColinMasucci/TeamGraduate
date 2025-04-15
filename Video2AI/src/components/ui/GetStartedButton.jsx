@@ -31,9 +31,9 @@ const GetStartedButton = () => {
           </SignOutButton>
         </>
       ) : (
-        <SignInButton mode="modal" redirectUrl="/dashboard">
+        <SignInButton mode="modal">
           <Button>
-           Log In
+          Log In
           </Button>
         </SignInButton>
       )}
