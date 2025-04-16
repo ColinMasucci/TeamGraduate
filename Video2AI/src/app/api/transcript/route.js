@@ -5,7 +5,6 @@ import dbConnect from '@/lib/dbConnect';
 import { readFile } from 'fs/promises';
 import path from 'path';
 
-// const apiKey = 'AIzaSyA4l9CPHtDAptuqpNB8J_c8u4hIPA-18sA';
 const apiKey = process.env.GOOGLE_GEMINI_API
 
 async function fetchTranscript(videoUrl) {
