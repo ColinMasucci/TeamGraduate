@@ -43,7 +43,7 @@ async function fetchSampleTranscript() {
 
   const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000';
   console.log(baseUrl);
-  const res = await fetch(`${baseUrl}/sample-transcript.txt`);
+  const res = await fetch(`${baseUrl}/heart-transcript.txt`);
   const rawText = await res.text();
 
   const firstFewLines = rawText.split(' ').slice(0, 10).join(' ');
