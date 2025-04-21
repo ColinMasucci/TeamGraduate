@@ -32,7 +32,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
     const handleTranscriptFetch = async () => {
       setLoadingQuiz(true);
 
-    if (!user) {
+      if (!user) {
         setError('User is not authenticated.');
         setLoadingQuiz(false);
         return;

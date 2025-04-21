@@ -1,7 +1,7 @@
 import mongoose from 'mongoose';
 
 const LeaderboardEntrySchema = new mongoose.Schema({
-  userIdentifier: { type: String, required: true },
+  userId: { type: String, required: true },
   username: { type: String, required: true },
   score: { type: Number, required: true },
   createdAt: { type: Date, default: Date.now },

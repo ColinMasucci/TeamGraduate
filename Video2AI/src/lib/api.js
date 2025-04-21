@@ -1,152 +1,110 @@
-export async function fetchSavedQuizzes(userId) {
-
-  if (!userId) {
-    throw new Error('User not authenticated');
-  }
-  
+async function handleFetch(url, options = {}) {
   try {
-    const response = await fetch(`/api/getSavedQuiz?userId=${userId}`, {
-      method: 'GET',
-    });
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      throw new Error(result.error || 'Failed to fetch quizzes');
+    const res = await fetch(url, options);
+    if (!res.ok) {
+      const errorText = await res.text();
+      throw new Error(`Request failed (${res.status}): ${errorText}`);
     }
-
-    return result;
-  } catch (error) {
-    console.error('Error fetching quizzes api.js:', error);
-    throw new Error(error.message || 'An unexpected error occurred');
+    return await res.json();
+  } catch (err) {
+    console.error(`Fetch error at ${url}:`, err);
+    throw err;
   }
 }
 
 
-export async function saveQuiz(quizData) {
-  // No need to get userIdentifier from localStorage
-  console.log('userdata for save clerk', quizData.userIdentifier)
-  console.log(quizData.quiz)
 
-  const response = await fetch('/api/saveQuiz', {
+
+export async function fetchSavedQuizzes(userId) {
+  if (!userId) throw new Error('User not authenticated');
+  return await handleFetch(`/api/getSavedQuiz?userId=${userId}`, {
+    method: 'GET',
+  });
+}
+
+export async function saveQuiz(quizData) {
+  return await handleFetch('/api/saveQuiz', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(quizData), // Already includes userIdentifier
+    body: JSON.stringify(quizData),
   });
-
-  const result = await response.json();
-  if (!response.ok) {
-    throw new Error(result.error || 'Failed to save quiz');
-  }
-  return result;
 }
 
-  
-  export async function deleteQuiz(id){
-    const response = await fetch('/api/deleteQuiz', {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({id})
-    })
-    const result = await response.json();
-    console.log(result)
-    if(!response.ok){
-        throw new Error(result.error || 'Failed to delete quiz');
-    }
-    return result;
-  }
+export async function deleteQuiz(id) {
+  return await handleFetch('/api/deleteQuiz', {
+    method: 'DELETE',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ id }),
+  });
+}
 
 export async function generateTranscript(videoUrl) {
-    try {
-        const response = await fetch('/api/transcript', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json', 
-            },
-            body: JSON.stringify({ videoUrl }),
-        });
-
-        if (!response.ok) {
-            const error = await response.json();
-            throw new Error(error.error || 'Failed to generate transcript from /api.js');
-        }
-
-        // Return the JSON data
-        const result = await response.json();
-        return result;
-    } catch (error) {
-        console.error('Error in generateTranscript:', error);
-        throw error;  
-    }
+  return await handleFetch('/api/transcript', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ videoUrl }),
+  });
 }
 
 export async function getMatchingPairs(videoUrl) {
-  try {
-      const response = await fetch('/api/getMatchingPairs', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json', 
-          },
-          body: JSON.stringify({ videoUrl }),
-      });
-
-      if (!response.ok) {
-          const error = await response.json();
-          throw new Error(error.error || 'Failed to generate matching pairs from /api.js');
-      }
-
-      // Return the JSON data
-      const result = await response.json();
-      return result;
-  } catch (error) {
-      console.error('Error in generateGetMatchingPirs:', error);
-      throw error;  
-  }
+  return await handleFetch('/api/getMatchingPairs', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ videoUrl }),
+  });
 }
 
 export async function generateFeedback(quiz, userAnswers) {
-  try {
-    const res = await fetch('/api/quizFeedback', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        quiz,
-        userAnswers
-      })
-    });
-    const feedback = await res.json();
-    return feedback;
-  } catch (error) {
-      console.error('Error in generateFeedback:', error);
-      throw error;  
-  }
-}
-
-export async function saveMatchingResult(userIdentifier, username, score) {
-  const res = await fetch('/api/saveMatchingResult', {
+  return await handleFetch('/api/quizFeedback', {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userIdentifier, username, score })
+    body: JSON.stringify({ quiz, userAnswers }),
   });
-
-  if (!res.ok) throw new Error('Failed to save score');
-  return await res.json();
 }
 
+export async function saveMatchingResult(userId, username, score) {
+  return await handleFetch('/api/saveMatchingResult', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ userId, username, score }),
+  });
+}
 
 export async function fetchLeaderboard() {
-  const res = await fetch('/api/leaderboard');
-  if (!res.ok) throw new Error('Failed to fetch leaderboard');
-  return await res.json();
+  return await handleFetch('/api/leaderboard', {
+    method: 'GET',
+  });
 }
+
+export async function saveTimeSpent(userId, page, durationMs) {
+
+  if (!userId) return;
+
+  return await handleFetch('/api/saveTimeSpent', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      userId,
+      page,
+      durationSeconds: Math.floor(durationMs / 1000),
+      timestamp: new Date().toISOString(),
+    }),
+  });
+}
+
+
 
 
 // quiz
