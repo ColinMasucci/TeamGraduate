@@ -1,6 +1,7 @@
 'use client';
 
 import React from 'react';
+import { useSearchParams } from 'next/navigation';
 import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { useUser, SignInButton, SignOutButton } from '@clerk/nextjs';
 import { useRouter } from 'next/navigation';

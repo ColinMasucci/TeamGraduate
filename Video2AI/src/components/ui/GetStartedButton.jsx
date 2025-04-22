@@ -1,6 +1,7 @@
 
 'use client'
 import React from 'react';
+import { useSearchParams } from 'next/navigation';
 import { Button } from './button';
 import { useRouter } from 'next/navigation';
 import { useUser, SignInButton, SignOutButton } from '@clerk/nextjs'; // Import Clerk hooks and components
