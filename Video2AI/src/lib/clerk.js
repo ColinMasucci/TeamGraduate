@@ -3,7 +3,8 @@ import { ClerkProvider } from '@clerk/nextjs';
 
 export default function MyClerkProvider({ children }) {
   return (
-    <ClerkProvider>
+    <ClerkProvider
+      afterSignOutUrl='/dashboard?link=youtube.com'>
       {children}
     </ClerkProvider>
   );

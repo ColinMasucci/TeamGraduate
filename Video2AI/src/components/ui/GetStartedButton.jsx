@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 const GetStartedButton = () => {
   const router = useRouter();
   const { isSignedIn } = useUser(); // Check if the user is signed in
+  const link = searchParams.get('link');
 
   const handleClick = () => {
     if (isSignedIn) {
@@ -31,7 +32,7 @@ const GetStartedButton = () => {
           </SignOutButton>
         </>
       ) : (
-        <SignInButton mode="modal">
+        <SignInButton mode="modal" forceRedirectUrl= {"dashboard?link=" + link}>
           <Button>
           Log In
           </Button>

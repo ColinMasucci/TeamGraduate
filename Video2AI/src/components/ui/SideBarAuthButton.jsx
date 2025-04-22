@@ -9,6 +9,7 @@ import { toast } from 'react-hot-toast';
 const SidebarAuthButton = () => {
   const { isSignedIn } = useUser();
   const router = useRouter();
+  const link = searchParams.get('link');
 
   return (
     <div>
@@ -22,7 +23,7 @@ const SidebarAuthButton = () => {
       ) : (
         <div className="flex items-center gap-3 cursor-pointer">
             <FiLogIn size={24} className="text-yellow-300" />
-            <SignInButton mode="modal">
+            <SignInButton mode="modal" forceRedirectUrl= {"dashboard?link=" + link}>
                 <h3 className="text-white text-lg hover:text-yellow-300">Login</h3>
             </SignInButton>
         </div>
