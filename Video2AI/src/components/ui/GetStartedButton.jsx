@@ -9,6 +9,8 @@ import { toast } from 'react-hot-toast';
 const GetStartedButton = () => {
   const router = useRouter();
   const { isSignedIn } = useUser(); // Check if the user is signed in
+  
+  const searchParams = useSearchParams();
   const link = searchParams.get('link');
 
   const handleClick = () => {

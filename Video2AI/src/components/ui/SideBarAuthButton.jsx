@@ -10,6 +10,7 @@ import { toast } from 'react-hot-toast';
 const SidebarAuthButton = () => {
   const { isSignedIn } = useUser();
   const router = useRouter();
+  const searchParams = useSearchParams();
   const link = searchParams.get('link');
 
   return (
