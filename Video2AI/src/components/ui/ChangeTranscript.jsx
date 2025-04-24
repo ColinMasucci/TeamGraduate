@@ -34,7 +34,7 @@ const ChangeTranscript = ({ initialLink }) => {
 
     useEffect(() => {
       if (initialLink && initialLink != 'null' && initialLink != null) {
-        if (transcript && initialLink != transcript.videoUrl){
+        if (transcript && initialLink != transcript.videoUrl || !transcript){
             clearTranscript();
         }
         setVideoUrl(initialLink);
@@ -161,9 +161,9 @@ const ChangeTranscript = ({ initialLink }) => {
     return (
       <div className="p-4 flex flex-col ">
         {/* <Button onClick={clearTheContext}> [Debug Button] Erase Cache</Button> */}
-        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mx-auto text-center max-w-xl">Before Using this Tool Please Enter the URL for the You Tube lesson you would like to study from.</h2>
+        <h2 className="text-3xl md:text-4xl font-bold tracking-tight mx-auto text-center max-w-xl">The URL below is the link to the video your Study Materials will be Based From.</h2>
         <p className=" text-lg mx-auto mt-3">
-          Enter the URL below and click Submit.
+          Click Submit and Get Studying!
         </p>
         <div className="flex justify-center mt-10">
           <input
@@ -171,6 +171,7 @@ const ChangeTranscript = ({ initialLink }) => {
             placeholder="  Enter YouTube video link"
             value={videoUrl}
             onChange={(e) => setVideoUrl(e.target.value)}
+            disabled={!isWhitelisted}
             className="max-w-md flex-1 rounded-md text-white bg-blue-950"/>
           {transcriptToAdd && isWhitelisted ? (
             <Button onClick={handleAddTranscript} className="ml-4">Add Transcript to Database</Button>
