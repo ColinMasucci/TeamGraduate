@@ -22,7 +22,6 @@ const FlashcardPage = () => {
   const [isAnimating, setIsAnimating] = useState(false);
 
   const [flashcards, setFlashcards] = useState([]);
-  const [videoUrl, setVideoUrl] = useState('');
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
@@ -33,6 +32,11 @@ const FlashcardPage = () => {
   const [definition, setDefinition] = useState('');
 
   const { transcript } = useTranscript();
+
+  useEffect(() => {
+    // This runs once when the component first loads
+    handleLoadFlashcards();
+  }, []);
 
 
   const handleMatchingPairsFetch = async (term, def) => {
@@ -84,8 +88,8 @@ const FlashcardPage = () => {
 
   
   const handleLoadFlashcards = (event) => {
-    event.preventDefault();
-    setVideoUrl("https://youtube.com");
+    //event.preventDefault();
+    handleMatchingPairsFetch();
   };
 
   useEffect(() => {
@@ -96,11 +100,6 @@ const FlashcardPage = () => {
     }
   }, [flashcards, currentIndex]);
 
-  useEffect(() => {
-    if (videoUrl) {
-      handleMatchingPairsFetch();
-    }
-  }, [videoUrl]);
 
 
   return (

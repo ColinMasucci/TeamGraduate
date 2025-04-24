@@ -62,7 +62,6 @@ const MatchingGame = () => {
   const [timerId, setTimerId] = useState(null);
   const [itemsData, setItemsData] = useState(null);
   const [itemsRemaining, setItemsRemaining] = useState(-1);
-  const [videoUrl, setVideoUrl] = useState('');
   
   const [loading, setLoading] = useState(false);
   const { user } = useUser();
@@ -76,25 +75,27 @@ const MatchingGame = () => {
     setLoading(true);
 
     if (!user) {
-        setError('User is not authenticated.');
-        setLoading(false);
-        return;
+      setError('User is not authenticated.');
+      setLoading(false);
+      return;
+    }
+    console.log("HIIII");
+    try {
+      console.log('clerk auth id', user.id)
+      const transcriptText = transcript.text;
+      const data = await getMatchingPairs(transcriptText);
+      console.log("AAAAAAAAAAAAAAAAA");
+      if (Array.isArray(data) && data.length > 0) {
+        console.log("ihihq9h");
+        setItemsData(transformToMatchingData(data));
+      } else {
+        setError('Unexpected format for matching terms');
       }
-
-      try {
-        console.log('clerk auth id', user.id)
-        const transcriptText = transcript.text;
-        const data = await getMatchingPairs(transcriptText);
-        if (Array.isArray(data) && data.length > 0) {
-          setItemsData(transformToMatchingData(data));
-        } else {
-          setError('Unexpected format for matching terms');
-        }
-      } catch (error) {
-        setError('Failed to fetch matchingPairs. Please try again.');
-      } finally {
-        setLoading(false);
-      }
+    } catch (error) {
+      setError('Failed to fetch matchingPairs. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleShowLeaderboard = async () => {
@@ -191,13 +192,6 @@ const MatchingGame = () => {
     }
   }, [itemsData])
 
-  //Runs after handleStart
-  useEffect(() => {
-    if (videoUrl) {
-      handleMatchingPairsFetch();
-    }
-  }, [videoUrl]);
-
   //When there are no more itms this runs
   useEffect(() => {
     if (itemsRemaining === 0 && time > 0) {
@@ -211,7 +205,13 @@ const MatchingGame = () => {
 
   //When the Start Button is pressed
   const handleStart = () => {
-    setVideoUrl("https://youtube.com");
+    document.querySelectorAll('.drag-item, .drop-zone').forEach((el) => el.remove());
+    setStarted(false);
+    setTime(0);
+    setTimerId(null);
+    setItemsData(null);
+    setItemsRemaining(-1);
+    handleMatchingPairsFetch();
   };
 
   const formatTime = (seconds) => {
@@ -277,12 +277,18 @@ const MatchingGame = () => {
               <div className="z-50 flex flex-col w-full h-full items-center justify-center bg-opacity-95">
                   <h1 className="text-3xl text-black font-bold mb-4">🎉 You won! 🎉</h1>
                   <p className="mb-6 text-black text-lg">Time: {formatTime(time)}</p>
-                  <button
-                    onClick={handleShowLeaderboard}
-                    className="bg-blue-800 text-white px-6 py-2 rounded shadow hover:bg-blue-700 transition"
-                  >
-                    View Leaderboard
-                  </button>
+                    <button
+                      onClick={handleShowLeaderboard}
+                      className="bg-blue-950 text-white px-6 py-2 rounded shadow hover:bg-blue-900 transition"
+                    >
+                      View Leaderboard
+                    </button>
+                    {/* <button
+                      onClick={handleStart}
+                      className="bg-blue-950 text-white mt-3 px-6 py-3 rounded text-lg shadow hover:bg-blue-900 transition"
+                    >
+                      Play Again
+                    </button> */}
               </div>
               )}
               </div>

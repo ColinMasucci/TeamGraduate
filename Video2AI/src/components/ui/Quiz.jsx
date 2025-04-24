@@ -1,6 +1,6 @@
 'use client'
 
-import React, {useState, Suspense, useRef} from 'react'
+import React, {useState, useEffect, Suspense, useRef} from 'react'
 import { Button } from './button';
 import {  saveQuiz, generateFeedback, generateQuizQuestions } from "@/lib/api";
 import '../../app/globals.css';
@@ -24,6 +24,11 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
     const { user } = useUser();
 
     const feedbackRef = useRef(null);
+
+    useEffect(() => {
+      // This runs once when the component first loads
+      handleSubmit();
+    }, []);
   
     const handleTranscriptFetch = async () => {
       setLoadingQuiz(true);
@@ -47,12 +52,11 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
           const videoUrl = transcript.videoUrl;
           const newQuiz = { userIdentifier, videoUrl, quiz: data };
           //setSavedQuizzes((prev) => [newQuiz, ...prev]);
-          console.log("Will try to save");
           await saveQuiz(newQuiz);
-          console.log("made i here!!!");
   
           setSavedQuizzes((prev) => [newQuiz, ...prev]);
           setMessage('Quiz saved successfully!');
+          console.log("Quiz Saved Successfully!");
         } else {
           setError('Unexpected format of quiz questions');
         }
@@ -91,7 +95,9 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
     };
   
     const handleSubmit = (event) => {
-      event.preventDefault();
+      //event.preventDefault();
+      setScore(null);
+      setFeedback(null);
       handleTranscriptFetch();
     };
   
@@ -123,9 +129,12 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
         <p className=" text-lg mx-auto mt-3">
           Start creating engaging quizzes from your YouTube video here.
         </p>
-        <div className="flex justify-center mt-10">
-          <Button onClick={handleSubmit} className="ml-4">Create Quiz</Button>
-        </div>
+        {!quiz && !loadingQuiz && (
+          <div className="flex justify-center mt-10">
+            <Button onClick={handleSubmit} className="ml-4">Create Quiz</Button>
+          </div>
+        )}
+  
         <section className="container mx-auto px-4 md:px-6 ">
           {loadingQuiz ? (
             <Suspense  fallback={<Loading />} >
@@ -158,7 +167,13 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
                       </div>
                     </div>
                   ))}
-                  <Button type="submit">Submit Quiz</Button>
+                  <div className='flex flex-row justify-evenly w-full'>
+                    <Button type="submit">Submit Quiz</Button>
+                    {score !== null &&(
+                      <Button onClick={handleSubmit}>Try Another Quiz</Button>
+                    )}
+                  </div>
+                  
                 </form>
                 <div ref={feedbackRef}>
                   {score !== null && (
