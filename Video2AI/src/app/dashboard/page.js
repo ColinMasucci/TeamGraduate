@@ -100,7 +100,13 @@ const Page = () => {
 
         {/* Main Content */}
         <div className="flex-grow p-4 mt-10 sm:mt-0 sm:ml-40 bg-gray-500">
-          {renderContent()}
+          {user ? (
+            renderContent()
+          ) : (
+            <div className='flex items-center justify-center text-center font-bold text-2xl mt-20'>
+              <h1>Click <b>Login</b> Found at the Top Left</h1>
+            </div>
+          )}
         </div>
       </main>
     </TranscriptProvider>

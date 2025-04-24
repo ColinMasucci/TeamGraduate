@@ -10,6 +10,8 @@ import { TbGoGame } from "react-icons/tb";
 import { RxCardStack } from "react-icons/rx";
 import SidebarAuthButton from './SideBarAuthButton';
 import { useTranscript } from '@/contexts/TranscriptContext';
+import { AiOutlineFileSync } from "react-icons/ai";
+import { useUser } from '@clerk/nextjs';
 
 
 export default function Sidebar({ onSelect }) {
@@ -20,6 +22,7 @@ export default function Sidebar({ onSelect }) {
   };
 
   const { transcript } = useTranscript();
+  const { user } = useUser();
 
   return (
     <div>
@@ -55,11 +58,19 @@ export default function Sidebar({ onSelect }) {
               <h3 className="text-white text-lg hover:text-yellow-300">Login</h3>
             </div> */}
             <SidebarAuthButton/>
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('ChangeTranscript')}>
-              <RxCardStack size={24} className="text-yellow-300" />
-              <h3 className="text-white text-lg hover:text-yellow-300">Transcript</h3>
-            </div>
-            {transcript ? (
+            {user ? (
+              <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('ChangeTranscript')}>
+                <AiOutlineFileSync size={24} className="text-yellow-300" />
+                <h3 className="text-white text-lg hover:text-yellow-300">Transcript</h3>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('')}>
+                <AiOutlineFileSync size={24} className="text-yellow-600" />
+                <h3 className="text-gray-500 text-lg">Transcript</h3>
+              </div>
+            )}
+            
+            {transcript && user ? (
               <div className="flex flex-col justify-center items-start gap-8 w-full">
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Quiz')}>
                   <MdOutlineQuiz size={24} className="text-yellow-300" />
