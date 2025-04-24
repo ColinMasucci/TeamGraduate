@@ -72,7 +72,7 @@ const MatchingGame = () => {
 
   const { transcript } = useTranscript();
 
-  const handleMatchingPairsFetch = async (term, def) => {
+  const handleMatchingPairsFetch = async () => {
     setLoading(true);
 
     if (!user) {

@@ -196,7 +196,7 @@ const ChangeTranscript = ({ initialLink }) => {
             <div className="text-center max-w-xl">
                 {transcriptAdded && (
                 <h1 className="text-green-200">
-                    ***The Transcript was added successfully and can now be used by Students. Delete all the text in the box below and then click on the 'Use Transcript' Button to test out your new Transcript Study Materials***
+                    ***The Transcript was added successfully and can now be used by Students. Delete all the text in the box below and then click on the &apos;Use Transcript&apos; Button to test out your new Transcript Study Materials***
                 </h1>
                 )}
             </div>
