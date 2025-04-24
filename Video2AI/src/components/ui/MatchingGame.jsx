@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { getMatchingPairs,  saveMatchingResult, fetchLeaderboard } from "@/lib/api";
 import { useUser } from '@clerk/nextjs';
+import { useTranscript } from '@/contexts/TranscriptContext';
 
 // const itemsData = [
 //   { id: 'word1', text: 'Ecosystem', match: 'word1' },
@@ -69,6 +70,8 @@ const MatchingGame = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [leaderboardData, setLeaderboardData] = useState([]);
 
+  const { transcript } = useTranscript();
+
   const handleMatchingPairsFetch = async (term, def) => {
     setLoading(true);
 
@@ -80,7 +83,8 @@ const MatchingGame = () => {
 
       try {
         console.log('clerk auth id', user.id)
-        const data = await getMatchingPairs(videoUrl);
+        const transcriptText = transcript.text;
+        const data = await getMatchingPairs(transcriptText);
         if (Array.isArray(data) && data.length > 0) {
           setItemsData(transformToMatchingData(data));
         } else {

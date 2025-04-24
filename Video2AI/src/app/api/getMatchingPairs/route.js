@@ -130,33 +130,21 @@ async function getMatchingPairs(description) {
 
 //flow starts from here
 export async function POST(req) {
-  const { videoUrl } = await req.json();
-  console.log("Received video URL:", videoUrl);
-  if (!videoUrl) {
-    console.error('Video URL is required');
-    return NextResponse.json({ error: 'Video URL is required' }, { status: 400 });
-  }
-
   try {
-    console.log('Attempting to fetch transcript...');
-    //const transcriptText = await fetchTranscript(videoUrl);
-    const transcriptText = await fetchSampleTranscript();
-    const firstFewLines = transcriptText.split(' ').slice(0, 10).join(' ');
-    console.log('Transcript fetched successfully:', firstFewLines, "...");
+    const { transcript } = await req.json();
+    console.log("Received transcript, first few words:", transcript?.split(' ').slice(0, 10).join(' '));
 
-    if (!transcriptText) {
-      console.error('Failed to fetch transcript in /transcript');
-      return NextResponse.json({ error: 'Failed to fetch transcript' }, { status: 500 });
+    if (!transcript || transcript.trim() === '') {
+      return NextResponse.json({ error: 'Transcript is required' }, { status: 400 });
     }
 
-    const matchPairs = await getMatchingPairs(transcriptText);
+    const matchPairs = await getMatchingPairs(transcript);
     console.log('Generated match pairs:', matchPairs);
 
     return NextResponse.json(matchPairs);
   } catch (error) {
-    console.error('Error in generatematchPairs:', error.message);
-    console.error('Error in generatematchPairs:', error);
-    return NextResponse.json({ error: 'Failed to generate match pairs from /api/getMatchingPairs' }, { status: 500 });
+    console.error('Error in /api/getMatchingPairs:', error.message);
+    return NextResponse.json({ error: 'Failed to generate match pairs' }, { status: 500 });
   }
 }
 

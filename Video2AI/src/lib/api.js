@@ -52,13 +52,13 @@ export async function generateTranscript(videoUrl) {
   });
 }
 
-export async function getMatchingPairs(videoUrl) {
+export async function getMatchingPairs(transcript) {
   return await handleFetch('/api/getMatchingPairs', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ videoUrl }),
+    body: JSON.stringify({ transcript }),
   });
 }
 

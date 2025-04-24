@@ -89,7 +89,7 @@ export async function POST(req) {
       console.error('Error in /api/quizQuestions:', error);
       return NextResponse.json({ error: 'Failed to generate quiz questions' }, { status: 500 });
     }
-  }
+}
   
 
 //maybe use officla youtube data api to fetch transcript / subtitile

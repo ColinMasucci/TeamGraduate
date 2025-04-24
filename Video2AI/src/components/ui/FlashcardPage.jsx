@@ -5,6 +5,7 @@ import {motion} from 'framer-motion';
 import { getMatchingPairs } from "@/lib/api";
 import { Button } from './button';
 import { useUser } from '@clerk/nextjs';
+import { useTranscript } from '@/contexts/TranscriptContext';
 
 // Flashcard Data Sample
 // const flashcards = [
@@ -31,30 +32,33 @@ const FlashcardPage = () => {
   const [term, setTerm] = useState('');
   const [definition, setDefinition] = useState('');
 
+  const { transcript } = useTranscript();
+
 
   const handleMatchingPairsFetch = async (term, def) => {
-        setLoading(true);
+    setLoading(true);
   
-      if (!user) {
-          setError('User is not authenticated.');
-          setLoading(false);
-          return;
-        }
-    
-        try {
-          console.log('clerk auth id', user.id)
-          const data = await getMatchingPairs(videoUrl);
-          if (Array.isArray(data) && data.length > 0) {
-            setFlashcards(data);
-          } else {
-            setError('Unexpected format of flashcards');
-          }
-        } catch (error) {
-          setError('Failed to fetch transcript. Please try again.');
-        } finally {
-          setLoading(false);
-        }
-    };
+    if (!user) {
+      setError('User is not authenticated.');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      console.log('clerk auth id', user.id)
+      const transcriptText = transcript.text;
+      const data = await getMatchingPairs(transcriptText);
+      if (Array.isArray(data) && data.length > 0) {
+        setFlashcards(data);
+      } else {
+        setError('Unexpected format of flashcards');
+      }
+    } catch (error) {
+      setError('Failed to fetch matching pairs. Please try again.');
+    } finally {
+      setLoading(false);
+    }
+  };
 
   function handleFlip(){
     if (!isAnimating){

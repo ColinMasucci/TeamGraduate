@@ -160,7 +160,7 @@ const ChangeTranscript = ({ initialLink }) => {
   
     return (
       <div className="p-4 flex flex-col ">
-        <Button onClick={clearTheContext}> [Debug Button] Erase Cache</Button>
+        {/* <Button onClick={clearTheContext}> [Debug Button] Erase Cache</Button> */}
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mx-auto text-center max-w-xl">Before Using this Tool Please Enter the URL for the You Tube lesson you would like to study from.</h2>
         <p className=" text-lg mx-auto mt-3">
           Enter the URL below and click Submit.
@@ -224,7 +224,7 @@ const ChangeTranscript = ({ initialLink }) => {
                     onChange={(e) => setTranscriptToAdd(e.target.value)}
                 />
             </div>
-        )};
+        )}
       </div>
     );
   };
