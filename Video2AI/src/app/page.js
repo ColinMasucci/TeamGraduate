@@ -7,7 +7,7 @@ import { Card, CardHeader, CardTitle, CardDescription, CardContent, CardFooter }
 import { CardContainer, CardItem, CardBody } from "@/components/ui/3d-card";
 import { HoverBorderGradient } from "@/components/ui/hover-border-gradient";
 import { HoverEffect} from "@/components/ui/card-hover-effect";
-import {  saveQuiz, deleteQuiz, generateTranscript } from "@/lib/api";
+import { saveQuiz, deleteQuiz, generateTranscript } from "@/lib/api";
 import { useUser, SignInButton } from '@clerk/nextjs';
 import GetStartedButton from "@/components/ui/GetStartedButton";
 import FAQSection from "@/components/ui/FaqSection";

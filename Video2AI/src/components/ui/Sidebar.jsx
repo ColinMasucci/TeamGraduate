@@ -9,6 +9,7 @@ import { FiLogIn } from "react-icons/fi";
 import { TbGoGame } from "react-icons/tb";
 import { RxCardStack } from "react-icons/rx";
 import SidebarAuthButton from './SideBarAuthButton';
+import { useTranscript } from '@/contexts/TranscriptContext';
 
 
 export default function Sidebar({ onSelect }) {
@@ -17,6 +18,8 @@ export default function Sidebar({ onSelect }) {
   const toggleSidebar = () => {
     setIsOpen(!isOpen);
   };
+
+  const { transcript } = useTranscript();
 
   return (
     <div>
@@ -46,28 +49,56 @@ export default function Sidebar({ onSelect }) {
           </div>
 
           {/* Sidebar Links */}
-          <div className="flex flex-col justify-center items-center gap-8 mt-20 w-full">
+          <div className="flex flex-col justify-center items-start gap-8 ml-10 mt-20 w-full">
             {/* <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Login')}>
               <FiLogIn size={24} className="text-yellow-300" />
               <h3 className="text-white text-lg hover:text-yellow-300">Login</h3>
             </div> */}
             <SidebarAuthButton/>
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Quiz')}>
-              <MdOutlineQuiz size={24} className="text-yellow-300" />
-              <h3 className="text-white text-lg hover:text-yellow-300">Quiz</h3>
-            </div>
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('History')}>
-              <FaHistory size={24} className="text-yellow-300" />
-              <h3 className="text-white text-lg hover:text-yellow-300">History</h3>
-            </div>
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
-              <TbGoGame size={24} className="text-yellow-300" />
-              <h3 className="text-white text-lg hover:text-yellow-300">Matching Game</h3>
-            </div>
-            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('FlashcardPage')}>
+            <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('ChangeTranscript')}>
               <RxCardStack size={24} className="text-yellow-300" />
-              <h3 className="text-white text-lg hover:text-yellow-300">Flashcards</h3>
+              <h3 className="text-white text-lg hover:text-yellow-300">Transcript</h3>
             </div>
+            {transcript ? (
+              <div className="flex flex-col justify-center items-start gap-8 w-full">
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('Quiz')}>
+                  <MdOutlineQuiz size={24} className="text-yellow-300" />
+                  <h3 className="text-white text-lg hover:text-yellow-300">Quiz</h3>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('History')}>
+                  <FaHistory size={24} className="text-yellow-300" />
+                  <h3 className="text-white text-lg hover:text-yellow-300">History</h3>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
+                  <TbGoGame size={24} className="text-yellow-300" />
+                  <h3 className="text-white text-lg hover:text-yellow-300">Matching Game</h3>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('FlashcardPage')}>
+                  <RxCardStack size={24} className="text-yellow-300" />
+                  <h3 className="text-white text-lg hover:text-yellow-300">Flashcards</h3>
+                </div>
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center items-start gap-8 w-full">
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('')}>
+                  <MdOutlineQuiz size={24} className="text-yellow-600" />
+                  <h3 className="text-gray-500 text-lg">Quiz</h3>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('')}>
+                  <FaHistory size={24} className="text-yellow-600" />
+                  <h3 className="text-gray-500 text-lg">History</h3>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('')}>
+                  <TbGoGame size={24} className="text-yellow-600" />
+                  <h3 className="text-gray-500 text-lg">Matching Game</h3>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('')}>
+                  <RxCardStack size={24} className="text-yellow-600" />
+                  <h3 className="text-gray-500 text-lg">Flashcards</h3>
+                </div>
+              </div>
+            )}
+            
           </div>
         </div>
       </div>

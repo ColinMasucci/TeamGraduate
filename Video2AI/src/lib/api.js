@@ -62,6 +62,8 @@ export async function getMatchingPairs(videoUrl) {
   });
 }
 
+
+
 export async function generateFeedback(quiz, userAnswers) {
   return await handleFetch('/api/quizFeedback', {
     method: 'POST',
@@ -101,6 +103,39 @@ export async function saveTimeSpent(userId, page, durationMs) {
       durationSeconds: Math.floor(durationMs / 1000),
       timestamp: new Date().toISOString(),
     }),
+  });
+}
+
+export async function saveTranscript(userId, videoUrl, transcript) {
+
+  if (!userId) return;
+
+  return await handleFetch('/api/saveTranscript', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      userId,
+      videoUrl,
+      transcript
+    }),
+  });
+}
+
+export async function generateQuizQuestions(transcript) {
+  return await handleFetch('/api/quizQuestions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ transcript }),
+  });
+}
+
+export async function fetchTranscript(videoUrl) {
+  if (!videoUrl) throw new Error('videoUrl is required');
+
+  return await handleFetch(`/api/getTranscript?videoUrl=${encodeURIComponent(videoUrl)}`, {
+    method: 'GET',
   });
 }
 

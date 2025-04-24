@@ -3,15 +3,15 @@
 import React, {useState, useEffect, Suspense} from 'react'
 import { Button } from './button';
 import { Input } from './input';
-import {  saveQuiz, deleteQuiz, generateTranscript, generateFeedback } from "@/lib/api";
+import {  saveQuiz, deleteQuiz, generateTranscript, generateFeedback, generateQuizQuestions } from "@/lib/api";
 import { v4 as uuidv4 } from 'uuid';
 import '../../app/globals.css';
 import { useUser } from '@clerk/nextjs';
 import Loading from '@/app/loading';
 import { toast } from 'react-hot-toast';
+import { useTranscript } from '@/contexts/TranscriptContext';
 
-const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
-    const [videoUrl, setVideoUrl] = useState('');
+const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
     const [quiz, setQuiz] = useState(null);
     const [userAnswers, setUserAnswers] = useState([]);
     const [score, setScore] = useState(null);
@@ -21,13 +21,9 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
     const [message, setMessage] = useState('');
     const [feedback, setFeedback] = useState(null);
 
-    const { user } = useUser();
+    const { transcript } = useTranscript();
 
-    useEffect(() => {
-      if (initialLink) {
-        setVideoUrl(initialLink);
-      }
-    }, [initialLink]);
+    const { user } = useUser();
   
     const handleTranscriptFetch = async () => {
       setLoadingQuiz(true);
@@ -40,18 +36,20 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
   
       try {
         console.log('clerk auth id', user.id)
-        const data = await generateTranscript(videoUrl);
+        const transcriptText = transcript.text;
+        const data = await generateQuizQuestions(transcriptText);
         if (Array.isArray(data) && data.length > 0) {
           setQuiz(data);
           setUserAnswers(new Array(data.length).fill(''));
         
           // Get the Clerk user ID
           const userIdentifier = user.id;
-  
+          const videoUrl = transcript.videoUrl;
           const newQuiz = { userIdentifier, videoUrl, quiz: data };
           //setSavedQuizzes((prev) => [newQuiz, ...prev]);
+          console.log("Will try to save");
           await saveQuiz(newQuiz);
-       
+          console.log("made i here!!!");
   
           setSavedQuizzes((prev) => [newQuiz, ...prev]);
           setMessage('Quiz saved successfully!');
@@ -59,7 +57,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
           setError('Unexpected format of quiz questions');
         }
       } catch (error) {
-        setError('Failed to fetch transcript. Please try again.');
+        setError('Failed to get quiz questons. Please try again.');
       } finally {
         setLoadingQuiz(false);
       }
@@ -120,16 +118,10 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes, initialLink }) => {
       <div className="p-4 flex flex-col ">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mx-auto">Transform Your Learning Experience</h2>
         <p className=" text-lg mx-auto mt-3">
-          Start creating engaging quizzes from your YouTube videos today.
+          Start creating engaging quizzes from your YouTube video here.
         </p>
         <div className="flex justify-center mt-10">
-          <input
-            type="text"
-            placeholder="  Enter YouTube video link"
-            value={videoUrl}
-            onChange={(e) => setVideoUrl(e.target.value)}
-            className="max-w-md flex-1 rounded-md text-white bg-blue-950"/>
-          <Button onClick={handleSubmit} className="ml-4">Convert</Button>
+          <Button onClick={handleSubmit} className="ml-4">Create Quiz</Button>
         </div>
         <section className="container mx-auto px-4 md:px-6 ">
           {loadingQuiz ? (

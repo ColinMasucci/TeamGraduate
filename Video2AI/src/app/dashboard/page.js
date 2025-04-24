@@ -11,9 +11,11 @@ import MatchingGame from '@/components/ui/MatchingGame';
 import FlashcardPage from '@/components/ui/FlashcardPage';
 import { useUser } from '@clerk/nextjs';
 import { saveTimeSpent } from "@/lib/api";
+import ChangeTranscript from '@/components/ui/ChangeTranscript';
+import { TranscriptProvider } from '@/contexts/TranscriptContext';
 
 const Page = () => {
-  const [activePage, setActivePage] = useState('Quiz');
+  const [activePage, setActivePage] = useState('ChangeTranscript');
   const [savedQuizzes, setSavedQuizzes] = useState([]);
 
   const searchParams = useSearchParams();
@@ -83,21 +85,25 @@ const Page = () => {
         return <MatchingGame />;
       case 'FlashcardPage':
         return <FlashcardPage />;
+      case 'ChangeTranscript':
+        return <ChangeTranscript initialLink={link}/>;
       default:
-        return <Quiz />;
+        return <ChangeTranscript />;
     }
   };
 
   return (
-    <main className="flex flex-col sm:flex-row  bg-gray-500 min-h-screen">
-      {/* Sidebar */}
-      <Sidebar onSelect={setActivePage} />
+    <TranscriptProvider>
+      <main className="flex flex-col sm:flex-row  bg-gray-500 min-h-screen">
+        {/* Sidebar */}
+        <Sidebar onSelect={setActivePage} />
 
-      {/* Main Content */}
-      <div className="flex-grow p-4 mt-10 sm:mt-0 sm:ml-40 bg-gray-500">
-        {renderContent()}
-      </div>
-    </main>
+        {/* Main Content */}
+        <div className="flex-grow p-4 mt-10 sm:mt-0 sm:ml-40 bg-gray-500">
+          {renderContent()}
+        </div>
+      </main>
+    </TranscriptProvider>
   );
 };
 

@@ -7,10 +7,12 @@ import path from 'path';
 
 const apiKey = process.env.GOOGLE_GEMINI_API
 
+//proxies={"https": "http://spuy11x68f:uF=jLvgtwicR5Fo486@gate.decodo.com:10001"},
+
 async function fetchTranscript(videoUrl) {
   try {
     console.log(`Fetching transcript for video URL: ${videoUrl}`);
-    const transcript = await YoutubeTranscript.fetchTranscript(videoUrl, {
+    const transcript = await YoutubeTranscript.fetchTranscript(videoUrl,{
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
         // Add other necessary headers if required
@@ -137,8 +139,8 @@ export async function POST(req) {
 
   try {
     console.log('Attempting to fetch transcript...');
-    //const transcriptText = await fetchTranscript(videoUrl);
-    const transcriptText = await fetchSampleTranscript();
+    //const transcriptText = await fetchTranscript(videoUrl); //for fetching through YouTube
+    const transcriptText = await fetchSampleTranscript(); //for hardcoded transcript
     const firstFewLines = transcriptText.split(' ').slice(0, 10).join(' ');
     console.log('Transcript fetched successfully:', firstFewLines, "...");
 
