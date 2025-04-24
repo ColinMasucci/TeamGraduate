@@ -1,10 +1,8 @@
 'use client'
 
-import React, {useState, useEffect, Suspense} from 'react'
+import React, {useState, Suspense, useRef} from 'react'
 import { Button } from './button';
-import { Input } from './input';
-import {  saveQuiz, deleteQuiz, generateTranscript, generateFeedback, generateQuizQuestions } from "@/lib/api";
-import { v4 as uuidv4 } from 'uuid';
+import {  saveQuiz, generateFeedback, generateQuizQuestions } from "@/lib/api";
 import '../../app/globals.css';
 import { useUser } from '@clerk/nextjs';
 import Loading from '@/app/loading';
@@ -24,6 +22,8 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
     const { transcript } = useTranscript();
 
     const { user } = useUser();
+
+    const feedbackRef = useRef(null);
   
     const handleTranscriptFetch = async () => {
       setLoadingQuiz(true);
@@ -112,6 +112,9 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
       });
       setScore(calculatedScore);
       handleQuizFeedbackFetch();
+      setTimeout(() => {
+        feedbackRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }, 100);
     };
   
     return (
@@ -157,11 +160,14 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
                   ))}
                   <Button type="submit">Submit Quiz</Button>
                 </form>
-                {score !== null && (
-                  <div className="mt-6 text-center w-48 h-16 bg-white mx-auto rounded-md sm:mb-10 ">
-                    <p className="text-xl font-bold text-black pt-4 ">Your Score: {score} / {quiz.length}</p>
-                  </div>
-                )}
+                <div ref={feedbackRef}>
+                  {score !== null && (
+                    <div className="mt-6 text-center w-48 h-16 bg-white mx-auto rounded-md sm:mb-10 ">
+                      <p className="text-xl font-bold text-black pt-4 ">Your Score: {score} / {quiz.length}</p>
+                    </div>
+                  )}
+                </div>
+                
               </div>
             )
           )}
