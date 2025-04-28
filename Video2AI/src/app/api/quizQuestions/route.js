@@ -30,19 +30,45 @@ async function generateQuizQuestions(description) {
         {
           role: 'user',
           parts: [
-            { text: "you will be given a description of the video and you need to return me a JSON object of 6 questions(that will be slightly changed so that it is not the same as the video with the first two being very easy, the second two being less easy difficulty and the last two being medium and write at the top the difficulty) with its options and the correct answer (labeled as correct_answer) that you will generate on basis of the description " },
+            {
+              text: `You will be given a description of a video. Based on this description, generate 6 multiple-choice questions in the following format:
+              [
+                {
+                  question: 'Question text here',
+                  options: [
+                    'Option 1',
+                    'Option 2',
+                    'Option 3',
+                    'Option 4'
+                  ],
+                  correct_answer: 'Correct answer here'
+                },
+                ...
+              ]
+              
+              Ensure the questions are based on the description but slightly changed so that they aren't the same as the content of the video. Label the difficulty level of the questions as follows:
+              - First two questions: Very Easy
+              - Second two questions: Less Easy
+              - Last two questions: Medium
+              
+              For each question, provide 4 answer options, with one labeled as "correct_answer". The output must be in JSON format exactly like the example above.`
+            },
           ],
         },
         {
           role: 'model',
           parts: [
-            { text: "Okay, I'm ready! Please provide me with the description of the video. I will then analyze it and generate a JSON object of 6 multiple-choice questions(that will be slightly changed so that it is not the same as the video with the first two being very easy, the second two being less easy difficulty and the last two being medium and labeled as such) with multiple choice options as well as the correct answer(labeled as correct_answer) for you." },
+            {
+              text: "Okay, I'm ready! Please provide me with the description of the video. I will then generate a JSON object of 6 multiple-choice questions, with each question having 4 options and a correct answer labeled as `correct_answer` in the exact format you requested."
+            },
           ],
         },
         {
           role: 'user',
           parts: [
-            { text: description },
+            {
+              text: description,
+            },
           ],
         },
       ],

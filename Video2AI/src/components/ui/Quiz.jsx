@@ -2,7 +2,7 @@
 
 import React, {useState, useEffect, Suspense, useRef} from 'react'
 import { Button } from './button';
-import {  saveQuiz, generateFeedback, generateQuizQuestions } from "@/lib/api";
+import {  saveQuiz, generateFeedback, generateQuizQuestions, fetchTranscript } from "@/lib/api";
 import '../../app/globals.css';
 import { useUser } from '@clerk/nextjs';
 import Loading from '@/app/loading';
@@ -18,6 +18,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
     const [loadingFeedback, setLoadingFeedback] = useState(false);
     const [message, setMessage] = useState('');
     const [feedback, setFeedback] = useState(null);
+    const [fetchAttempts, setFetchAttempts] = useState(0);
 
     const { transcript } = useTranscript();
 
@@ -62,6 +63,11 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
         }
       } catch (error) {
         setError('Failed to get quiz questons. Please try again.');
+        console.log("Error with getting the quiz questions");
+        setFetchAttempts(fetchAttempts + 1);
+        if (fetchAttempts > 5){
+          handleTranscriptFetch();
+        }
       } finally {
         setLoadingQuiz(false);
       }
@@ -98,6 +104,7 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
       //event.preventDefault();
       setScore(null);
       setFeedback(null);
+      setFetchAttempts(0);
       handleTranscriptFetch();
     };
   
@@ -131,7 +138,8 @@ const Quiz = ({ savedQuizzes, setSavedQuizzes }) => {
         </p>
         {!quiz && !loadingQuiz && (
           <div className="flex justify-center mt-10">
-            <Button onClick={handleSubmit} className="ml-4">Create Quiz</Button>
+            <h1 className='text-red-200'>There was an Error while creating your quiz. Would you like to Try Again?</h1>
+            <Button onClick={handleSubmit} className="ml-4">Try Again</Button>
           </div>
         )}
   

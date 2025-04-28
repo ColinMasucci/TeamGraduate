@@ -213,7 +213,7 @@ const ChangeTranscript = ({ initialLink }) => {
         {isWhitelisted && (
             <div className="flex flex-col space-y-2 items-center">
                 <label htmlFor="transcript" className="font-medium text-white">
-                    To Add a Transcript for Students, Paste it Below
+                    To Add a New Transcript for Students, Paste it Below
                 </label>
                 <textarea
                     id="transcript"
