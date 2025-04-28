@@ -100,7 +100,7 @@ const MatchingGame = () => {
 
   const handleShowLeaderboard = async () => {
     try {
-      const data = await fetchLeaderboard();
+      const data = await fetchLeaderboard(transcript.videoUrl);
       setLeaderboardData(data);
       setShowLeaderboard(true);
     } catch (error) {
@@ -196,7 +196,7 @@ const MatchingGame = () => {
   useEffect(() => {
     if (itemsRemaining === 0 && time > 0) {
       // Save score
-      saveMatchingResult(user.id, user.fullName, time)
+      saveMatchingResult(user.id, user.fullName, time, transcript.videoUrl)
         .then(() => console.log('Score saved!'))
         .catch(err => console.error(err));
     }

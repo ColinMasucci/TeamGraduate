@@ -74,18 +74,18 @@ export async function generateFeedback(quiz, userAnswers) {
   });
 }
 
-export async function saveMatchingResult(userId, username, score) {
+export async function saveMatchingResult(userId, username, score, videoUrl) {
   return await handleFetch('/api/saveMatchingResult', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify({ userId, username, score }),
+    body: JSON.stringify({ userId, username, score, videoUrl }),
   });
 }
 
-export async function fetchLeaderboard() {
-  return await handleFetch('/api/leaderboard', {
+export async function fetchLeaderboard(videoUrl) {
+  return await handleFetch(`/api/leaderboard?videoUrl=${encodeURIComponent(videoUrl)}`, {
     method: 'GET',
   });
 }

@@ -6,14 +6,14 @@ export async function POST(req) {
   await dbConnect();
 
   try {
-    const { userId, username, score } = await req.json();
-    console.log('saveScore', userId, username, score);
+    const { userId, username, score, videoUrl } = await req.json();
+    console.log('saveScore', userId, username, score, videoUrl);
 
     if (!userId || !username || typeof score !== 'number') {
       return NextResponse.json({ error: 'All fields are required and score must be a number' }, { status: 400 });
     }
 
-    const newEntry = new LeaderboardEntry({ userId, username, score });
+    const newEntry = new LeaderboardEntry({ userId, username, score, videoUrl });
     await newEntry.save();
 
     return NextResponse.json({ message: 'Score saved successfully', entry: newEntry }, { status: 201 });
