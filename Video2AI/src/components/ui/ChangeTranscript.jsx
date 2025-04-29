@@ -13,7 +13,8 @@ import { TranscriptContext } from '@/contexts/TranscriptContext';
 import { useTranscript } from '@/contexts/TranscriptContext';
 
 const WHITELISTED_EMAILS = [
-    "colined14@gmail.com"
+    "colined14@gmail.com",
+    "juju.mariscal@gmail.com"
 ];
 
 const ChangeTranscript = ({ initialLink }) => {
