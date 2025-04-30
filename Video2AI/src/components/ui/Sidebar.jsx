@@ -80,13 +80,13 @@ export default function Sidebar({ onSelect }) {
                   <FaHistory size={24} className="text-yellow-300" />
                   <h3 className="text-white text-lg hover:text-yellow-300">History</h3>
                 </div>
-                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
-                  <TbGoGame size={24} className="text-yellow-300" />
-                  <h3 className="text-white text-lg hover:text-yellow-300">Matching Game</h3>
-                </div>
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('FlashcardPage')}>
                   <RxCardStack size={24} className="text-yellow-300" />
                   <h3 className="text-white text-lg hover:text-yellow-300">Flashcards</h3>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('MatchingGame')}>
+                  <TbGoGame size={24} className="text-yellow-300" />
+                  <h3 className="text-white text-lg hover:text-yellow-300">Matching Game</h3>
                 </div>
               </div>
             ) : (
@@ -100,12 +100,12 @@ export default function Sidebar({ onSelect }) {
                   <h3 className="text-gray-500 text-lg">History</h3>
                 </div>
                 <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('')}>
-                  <TbGoGame size={24} className="text-yellow-600" />
-                  <h3 className="text-gray-500 text-lg">Matching Game</h3>
-                </div>
-                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('')}>
                   <RxCardStack size={24} className="text-yellow-600" />
                   <h3 className="text-gray-500 text-lg">Flashcards</h3>
+                </div>
+                <div className="flex items-center gap-3 cursor-pointer" onClick={() => onSelect('')}>
+                  <TbGoGame size={24} className="text-yellow-600" />
+                  <h3 className="text-gray-500 text-lg">Matching Game</h3>
                 </div>
               </div>
             )}
