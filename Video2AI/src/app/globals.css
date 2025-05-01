@@ -101,12 +101,20 @@
   height: 100%;
 }
 
-.flip-card-front,
+.flip-card-front {
+  position: absolute;
+  backface-visibility: hidden;
+  /*background-color: aliceblue;*/
+  background-color: rgb(14, 35, 98);
+  color: white;
+}
+
 .flip-card-back {
   position: absolute;
   backface-visibility: hidden;
-  background-color: aliceblue;
-  color: black;
+  /*background-color: aliceblue;*/
+  background-color: rgb(39, 107, 208);
+  color: white;
 }
 
 .flip-card-back {

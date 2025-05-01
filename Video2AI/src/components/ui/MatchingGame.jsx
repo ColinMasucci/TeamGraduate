@@ -236,11 +236,11 @@ const MatchingGame = () => {
             {!started && (
                 <div className="z-50 flex flex-col w-full h-full items-center justify-center bg-opacity-95">
                     <h1 className="text-3xl text-black font-bold mb-4">Matching Game</h1>
-                    <p className="mb-6 text-black text-lg">Match each word with its definition!</p>
+                    <div className='flex flex-row'><p className="mb-6 text-black text-lg">Match the</p> <p className='mb-6 text-lg text-blue-800 pl-1 pr-1'> dark blue </p> <p className="mb-6 text-black text-lg"> term with its </p> <p className='text-blue-500 mb-6 text-lg pl-1 pr-1'> light blue </p> <p className="mb-6 text-black text-lg"> definition!</p></div>
                     {loading ? (
                       <div className="mt-5 w-48 h-2 bg-gray-300 rounded-full overflow-hidden mb-6">
                           <div className="h-full bg-blue-700 animate-pulse w-full"></div>
-                      </div>
+                      </div> 
                     ) : (
                       <button
                           onClick={handleStart}
@@ -295,17 +295,21 @@ const MatchingGame = () => {
             )}
         </div>
 
-        {started && itemsData.map((item) => (
-          <div
-            key={item.id}
-            id={item.id}
-            draggable
-            data-match={item.match}
-            className="drag-item absolute bg-green-500 text-white px-4 py-2 rounded shadow-lg cursor-grab select-none w-40"
-          >
-            {item.text}
-          </div>
-        ))}
+        {started && itemsData.map((item, index) => {
+          const bgColor = index % 2 ? "bg-blue-500" : "bg-blue-900";
+
+          return(
+            <div
+              key={item.id}
+              id={item.id}
+              draggable
+              data-match={item.match}
+              className={`drag-item absolute ${bgColor} text-white px-4 py-2 rounded shadow-lg cursor-grab select-none w-40`}
+            >
+              {item.text}
+            </div>
+          )
+        })}
       </div>
     </div>
   );
